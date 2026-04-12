@@ -4,3 +4,4 @@ dist
 .cache
 scripts/output
 docker/data
+**/*.md
