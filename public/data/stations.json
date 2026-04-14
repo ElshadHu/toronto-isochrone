@@ -1,0 +1,499 @@
+[
+  {
+    "id": "bathurst",
+    "name": "Bathurst Station",
+    "lat": 43.665799,
+    "lng": -79.4114395,
+    "lines": ["2"]
+  },
+  {
+    "id": "bay",
+    "name": "Bay Station",
+    "lat": 43.669999000000004,
+    "lng": -79.390939,
+    "lines": ["2"]
+  },
+  {
+    "id": "bayview",
+    "name": "Bayview Station",
+    "lat": 43.7669115,
+    "lng": -79.3867165,
+    "lines": ["4"]
+  },
+  {
+    "id": "bessarion",
+    "name": "Bessarion Station",
+    "lat": 43.769249,
+    "lng": -79.3763285,
+    "lines": ["4"]
+  },
+  {
+    "id": "bloor",
+    "name": "Bloor Station",
+    "lat": 43.6705465,
+    "lng": -79.3856535,
+    "lines": ["1"]
+  },
+  {
+    "id": "broadview",
+    "name": "Broadview Station",
+    "lat": 43.676699,
+    "lng": -79.35883799999999,
+    "lines": ["2"]
+  },
+  {
+    "id": "castle-frank",
+    "name": "Castle Frank Station",
+    "lat": 43.673799,
+    "lng": -79.368938,
+    "lines": ["2"]
+  },
+  {
+    "id": "cedarvale",
+    "name": "Cedarvale Station",
+    "lat": 43.699998,
+    "lng": -79.43649099999999,
+    "lines": ["1"]
+  },
+  {
+    "id": "chester",
+    "name": "Chester Station",
+    "lat": 43.678296,
+    "lng": -79.3525195,
+    "lines": ["2"]
+  },
+  {
+    "id": "christie",
+    "name": "Christie Station",
+    "lat": 43.664299,
+    "lng": -79.41814,
+    "lines": ["2"]
+  },
+  {
+    "id": "college",
+    "name": "College Station",
+    "lat": 43.660799,
+    "lng": -79.38288800000001,
+    "lines": ["1"]
+  },
+  {
+    "id": "coxwell",
+    "name": "Coxwell Station",
+    "lat": 43.684399,
+    "lng": -79.322836,
+    "lines": ["2"]
+  },
+  {
+    "id": "davisville",
+    "name": "Davisville Station",
+    "lat": 43.697648,
+    "lng": -79.39708999999999,
+    "lines": ["1"]
+  },
+  {
+    "id": "don-mills",
+    "name": "Don Mills Station",
+    "lat": 43.7753975,
+    "lng": -79.3463865,
+    "lines": ["4"]
+  },
+  {
+    "id": "donlands",
+    "name": "Donlands Station",
+    "lat": 43.681049,
+    "lng": -79.338337,
+    "lines": ["2"]
+  },
+  {
+    "id": "downsview-park",
+    "name": "Downsview Park Station",
+    "lat": 43.753311,
+    "lng": -79.478693,
+    "lines": ["1"]
+  },
+  {
+    "id": "dufferin",
+    "name": "Dufferin Station",
+    "lat": 43.660699,
+    "lng": -79.43478999999999,
+    "lines": ["2"]
+  },
+  {
+    "id": "dundas-west",
+    "name": "Dundas West Station",
+    "lat": 43.657298999999995,
+    "lng": -79.451941,
+    "lines": ["2"]
+  },
+  {
+    "id": "dupont",
+    "name": "Dupont Station",
+    "lat": 43.674349,
+    "lng": -79.4068895,
+    "lines": ["1"]
+  },
+  {
+    "id": "eglinton",
+    "name": "Eglinton Station",
+    "lat": 43.705597999999995,
+    "lng": -79.39864,
+    "lines": ["1"]
+  },
+  {
+    "id": "finch",
+    "name": "Finch Station",
+    "lat": 43.780497,
+    "lng": -79.4154915,
+    "lines": ["1"]
+  },
+  {
+    "id": "finch-west",
+    "name": "Finch West Station",
+    "lat": 43.764855,
+    "lng": -79.491118,
+    "lines": ["1"]
+  },
+  {
+    "id": "glencairn",
+    "name": "Glencairn Station",
+    "lat": 43.708597999999995,
+    "lng": -79.4405415,
+    "lines": ["1"]
+  },
+  {
+    "id": "greenwood",
+    "name": "Greenwood Station",
+    "lat": 43.682699,
+    "lng": -79.330837,
+    "lines": ["2"]
+  },
+  {
+    "id": "high-park",
+    "name": "High Park Station",
+    "lat": 43.653699,
+    "lng": -79.46784099999999,
+    "lines": ["2"]
+  },
+  {
+    "id": "highway-407",
+    "name": "Highway 407 Station",
+    "lat": 43.783359,
+    "lng": -79.523454,
+    "lines": ["1"]
+  },
+  {
+    "id": "islington",
+    "name": "Islington Station",
+    "lat": 43.645398,
+    "lng": -79.52414350000001,
+    "lines": ["2"]
+  },
+  {
+    "id": "jane",
+    "name": "Jane Station",
+    "lat": 43.649949,
+    "lng": -79.483742,
+    "lines": ["2"]
+  },
+  {
+    "id": "keele",
+    "name": "Keele Station",
+    "lat": 43.655499,
+    "lng": -79.459541,
+    "lines": ["2"]
+  },
+  {
+    "id": "kennedy",
+    "name": "Kennedy Station",
+    "lat": 43.732318,
+    "lng": -79.2642515,
+    "lines": ["2"]
+  },
+  {
+    "id": "king",
+    "name": "King Station",
+    "lat": 43.649049,
+    "lng": -79.37788800000001,
+    "lines": ["1"]
+  },
+  {
+    "id": "kipling",
+    "name": "Kipling Station",
+    "lat": 43.637519999999995,
+    "lng": -79.53579300000001,
+    "lines": ["2"]
+  },
+  {
+    "id": "lansdowne",
+    "name": "Lansdowne Station",
+    "lat": 43.65928,
+    "lng": -79.442467,
+    "lines": ["2"]
+  },
+  {
+    "id": "lawrence",
+    "name": "Lawrence Station",
+    "lat": 43.725948,
+    "lng": -79.40239,
+    "lines": ["1"]
+  },
+  {
+    "id": "lawrence-west",
+    "name": "Lawrence West Station",
+    "lat": 43.715266,
+    "lng": -79.4439145,
+    "lines": ["1"]
+  },
+  {
+    "id": "leslie",
+    "name": "Leslie Station",
+    "lat": 43.771298,
+    "lng": -79.36589000000001,
+    "lines": ["4"]
+  },
+  {
+    "id": "main-street",
+    "name": "Main Street Station",
+    "lat": 43.689099,
+    "lng": -79.301536,
+    "lines": ["2"]
+  },
+  {
+    "id": "museum",
+    "name": "Museum Station",
+    "lat": 43.666599,
+    "lng": -79.393189,
+    "lines": ["1"]
+  },
+  {
+    "id": "north-york-centre",
+    "name": "North York Centre Station",
+    "lat": 43.767947,
+    "lng": -79.412542,
+    "lines": ["1"]
+  },
+  {
+    "id": "old-mill",
+    "name": "Old Mill Station",
+    "lat": 43.649748,
+    "lng": -79.494142,
+    "lines": ["2"]
+  },
+  {
+    "id": "osgoode",
+    "name": "Osgoode Station",
+    "lat": 43.651099,
+    "lng": -79.38668799999999,
+    "lines": ["1"]
+  },
+  {
+    "id": "ossington",
+    "name": "Ossington Station",
+    "lat": 43.662199,
+    "lng": -79.42699,
+    "lines": ["2"]
+  },
+  {
+    "id": "pape",
+    "name": "Pape Station",
+    "lat": 43.679799,
+    "lng": -79.344937,
+    "lines": ["2"]
+  },
+  {
+    "id": "pioneer-village",
+    "name": "Pioneer Village Station",
+    "lat": 43.776745500000004,
+    "lng": -79.509353,
+    "lines": ["1"]
+  },
+  {
+    "id": "queen",
+    "name": "Queen Station",
+    "lat": 43.652749,
+    "lng": -79.379388,
+    "lines": ["1"]
+  },
+  {
+    "id": "queen-s-park",
+    "name": "Queen's Park Station",
+    "lat": 43.659899,
+    "lng": -79.390489,
+    "lines": ["1"]
+  },
+  {
+    "id": "rosedale",
+    "name": "Rosedale Station",
+    "lat": 43.676649,
+    "lng": -79.388339,
+    "lines": ["1"]
+  },
+  {
+    "id": "royal-york",
+    "name": "Royal York Station",
+    "lat": 43.648448,
+    "lng": -79.509593,
+    "lines": ["2"]
+  },
+  {
+    "id": "runnymede",
+    "name": "Runnymede Station",
+    "lat": 43.651899,
+    "lng": -79.475842,
+    "lines": ["2"]
+  },
+  {
+    "id": "sheppard-west",
+    "name": "Sheppard West Station",
+    "lat": 43.749675499999995,
+    "lng": -79.462387,
+    "lines": ["1"]
+  },
+  {
+    "id": "sheppard-yonge",
+    "name": "Sheppard-Yonge Station",
+    "lat": 43.7612845,
+    "lng": -79.41051675,
+    "lines": ["1", "4"]
+  },
+  {
+    "id": "sherbourne",
+    "name": "Sherbourne Station",
+    "lat": 43.6721385,
+    "lng": -79.3761675,
+    "lines": ["2"]
+  },
+  {
+    "id": "spadina",
+    "name": "Spadina Station",
+    "lat": 43.668374,
+    "lng": -79.404889,
+    "lines": ["1", "2"]
+  },
+  {
+    "id": "st-andrew",
+    "name": "St Andrew Station",
+    "lat": 43.647649,
+    "lng": -79.384788,
+    "lines": ["1"]
+  },
+  {
+    "id": "st-clair",
+    "name": "St Clair Station",
+    "lat": 43.688049,
+    "lng": -79.39328900000001,
+    "lines": ["1"]
+  },
+  {
+    "id": "st-clair-west",
+    "name": "St Clair West Station",
+    "lat": 43.684548,
+    "lng": -79.41564,
+    "lines": ["1"]
+  },
+  {
+    "id": "st-george",
+    "name": "St George Station",
+    "lat": 43.668399,
+    "lng": -79.39881399999999,
+    "lines": ["1", "2"]
+  },
+  {
+    "id": "st-patrick",
+    "name": "St Patrick Station",
+    "lat": 43.654649,
+    "lng": -79.38818800000001,
+    "lines": ["1"]
+  },
+  {
+    "id": "summerhill",
+    "name": "Summerhill Station",
+    "lat": 43.682699,
+    "lng": -79.39098899999999,
+    "lines": ["1"]
+  },
+  {
+    "id": "tmu",
+    "name": "TMU Station",
+    "lat": 43.656549,
+    "lng": -79.380988,
+    "lines": ["1"]
+  },
+  {
+    "id": "union",
+    "name": "Union Station",
+    "lat": 43.645699,
+    "lng": -79.380588,
+    "lines": ["1"]
+  },
+  {
+    "id": "vaughan-metropolitan-centre",
+    "name": "Vaughan Metropolitan Centre Station",
+    "lat": 43.794021,
+    "lng": -79.527906,
+    "lines": ["1"]
+  },
+  {
+    "id": "victoria-park",
+    "name": "Victoria Park Station",
+    "lat": 43.694899,
+    "lng": -79.288685,
+    "lines": ["2"]
+  },
+  {
+    "id": "warden",
+    "name": "Warden Station",
+    "lat": 43.711549,
+    "lng": -79.27893499999999,
+    "lines": ["2"]
+  },
+  {
+    "id": "wellesley",
+    "name": "Wellesley Station",
+    "lat": 43.665549,
+    "lng": -79.38363799999999,
+    "lines": ["1"]
+  },
+  {
+    "id": "wilson",
+    "name": "Wilson Station",
+    "lat": 43.734448,
+    "lng": -79.450042,
+    "lines": ["1"]
+  },
+  {
+    "id": "woodbine",
+    "name": "Woodbine Station",
+    "lat": 43.686499,
+    "lng": -79.313136,
+    "lines": ["2"]
+  },
+  {
+    "id": "yonge",
+    "name": "Yonge Station",
+    "lat": 43.671023,
+    "lng": -79.3863725,
+    "lines": ["2"]
+  },
+  {
+    "id": "york-mills",
+    "name": "York Mills Station",
+    "lat": 43.743848,
+    "lng": -79.406091,
+    "lines": ["1"]
+  },
+  {
+    "id": "york-university",
+    "name": "York University",
+    "lat": 43.774097,
+    "lng": -79.499888,
+    "lines": ["1"]
+  },
+  {
+    "id": "yorkdale",
+    "name": "Yorkdale Station",
+    "lat": 43.724598,
+    "lng": -79.44749200000001,
+    "lines": ["1"]
+  }
+]
