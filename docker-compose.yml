@@ -13,5 +13,23 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+    container_name: toronto_valhalla
+    ports:
+      - '8002:8002'
+    volumes:
+      - ./valhalla_data/custom_files:/custom_files
+      - ./valhalla_data/gtfs_feeds:/gtfs_feeds
+    environment:
+      - tile_urls=https://download.geofabrik.de/north-america/canada/ontario-latest.osm.pbf
+      - build_routing=True
+      - build_tar=True
+      - build_transit=True
+      - build_admins=True
+      - build_time_zones=True
+      - force_rebuild=True
+      - server_threads=4
+
 volumes:
   mysql_data:
