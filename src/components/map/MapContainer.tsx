@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { CARTO_DARK_MATTER, DEFAULT_ZOOM, LINE_COLORS, TORONTO_CENTER } from '@/lib/constants'
+import { CARTO_DARK_MATTER, DEFAULT_ZOOM, LINE_META, TORONTO_CENTER } from '@/lib/constants'
 
 import { api } from '@/trpc/client'
 
@@ -51,7 +51,7 @@ export function MapContainer(): React.ReactElement {
         source: 'station-preview',
         paint: {
           'circle-radius': 7,
-          'circle-color': LINE_COLORS['line-1'], // '#FFD700'
+          'circle-color': LINE_META['1'].color,
           'circle-stroke-width': 2,
           'circle-stroke-color': '#ffffff',
         },
