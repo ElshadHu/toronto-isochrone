@@ -295,6 +295,55 @@ export function MapContainer(): React.ReactElement {
           map.setFilter('subway-lines-layer', ['in', ['get', 'route_id'], ['literal', lineIds]])
         }
       )
+
+      // --- Bootstrap persisted state after map load ---
+      const {
+        selectedStation: persistedStation,
+        selectedTime: persistedTime,
+        enabledLines: persistedLines,
+      } = useMapStore.getState()
+
+      // Re-apply selectedTime layer visibility
+      for (const t of TRAVEL_TIMES) {
+        const visible = t <= persistedTime
+        map.setLayoutProperty(`iso-fill-${t}`, 'visibility', visible ? 'visible' : 'none')
+        map.setLayoutProperty(`iso-outline-${t}`, 'visibility', visible ? 'visible' : 'none')
+      }
+
+      // Re-apply enabledLines filter on station dots + subway lines
+      const persistedLineIds = [...persistedLines]
+      map.setFilter('subway-lines-layer', [
+        'in',
+        ['get', 'route_id'],
+        ['literal', persistedLineIds],
+      ])
+      const filteredByLine = initialStations.filter((s) =>
+        s.lines.some((l) => persistedLines.has(l))
+      )
+      const stationSrcInit = map.getSource('all-stations')
+      if (stationSrcInit && 'setData' in stationSrcInit) {
+        ;(stationSrcInit as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(filteredByLine))
+      }
+
+      // Re-apply selected station highlight + isochrone
+      if (persistedStation) {
+        const highlightSrc = map.getSource('selected-station')
+        if (highlightSrc && 'setData' in highlightSrc) {
+          ;(highlightSrc as maplibregl.GeoJSONSource).setData(
+            selectedStationGeoJSON(persistedStation)
+          )
+        }
+        map.flyTo({ center: [persistedStation.lng, persistedStation.lat], zoom: 13 })
+        try {
+          const geojson = await fetchIsochrone(persistedStation.lat, persistedStation.lng)
+          const isoSrc = map.getSource('isochrone-polygons')
+          if (isoSrc && 'setData' in isoSrc) {
+            ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson)
+          }
+        } catch (err) {
+          console.error('Failed to restore isochrone:', err)
+        }
+      }
     })
 
     mapRef.current = map
