@@ -1,10 +1,4 @@
-export const LINE_ID = {
-  ONE: '1',
-  TWO: '2',
-  FOUR: '4',
-} as const
-
-export type LineId = (typeof LINE_ID)[keyof typeof LINE_ID]
+export type LineId = '1' | '2' | '4'
 
 export type TravelTime = 15 | 30 | 60
 

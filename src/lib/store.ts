@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
+import { LINE_META } from '@/lib/constants'
 import type { LineId, Station, TravelTime } from '@/server/types/station'
 
-const ALL_LINE_IDS: readonly LineId[] = ['1', '2', '4']
+const ALL_LINE_IDS = Object.keys(LINE_META) as LineId[]
 
 type MapState = {
   stations: Station[]
