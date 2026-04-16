@@ -12,18 +12,21 @@ export function SelectedStationCard(): React.ReactElement {
 
   if (!selectedStation) {
     return (
-      <div className="rounded-lg border border-white/5 bg-zinc-900 px-4 py-3">
-        <p className="text-xs text-zinc-500">Select a subway station on the map.</p>
+      <div className="rounded-lg border border-white/5 bg-zinc-900 px-3 py-2 md:px-4 md:py-3">
+        <p className="text-xs text-zinc-500">
+          <span className="md:hidden">Tap a station.</span>
+          <span className="hidden md:inline">Select a subway station on the map.</span>
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="rounded-lg border border-white/10 bg-zinc-900 px-4 py-3">
+    <div className="rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 md:px-4 md:py-3">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-white">{selectedStation.name}</p>
-          <div className="mt-1.5 flex flex-wrap gap-1">
+          <div className="mt-1.5 hidden flex-wrap gap-1 md:flex">
             {selectedStation.lines.map((lineId) => {
               const meta = LINE_META[lineId]
               return (
