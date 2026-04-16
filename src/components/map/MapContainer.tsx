@@ -3,9 +3,15 @@
 import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { CARTO_DARK_MATTER, DEFAULT_ZOOM, LINE_META, TORONTO_CENTER } from '@/lib/constants'
+import {
+  CARTO_DARK_MATTER,
+  DEFAULT_ZOOM,
+  ISOCHRONE_COLORS,
+  LINE_META,
+  TORONTO_CENTER,
+} from '@/lib/constants'
 import { useMapStore } from '@/lib/store'
-import type { Station } from '@/server/types/station'
+import type { Station, TravelTime } from '@/server/types/station'
 
 // Convert Station[] into a GeoJSON FeatureCollection of Points
 function stationsToGeoJSON(stations: readonly Station[]): GeoJSON.FeatureCollection<GeoJSON.Point> {
@@ -18,6 +24,49 @@ function stationsToGeoJSON(stations: readonly Station[]): GeoJSON.FeatureCollect
     })),
   }
 }
+
+// Build a single-point GeoJSON for highlighting the selected station
+function selectedStationGeoJSON(station: Station | null): GeoJSON.FeatureCollection<GeoJSON.Point> {
+  if (!station) return { type: 'FeatureCollection', features: [] }
+  return {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature' as const,
+        geometry: { type: 'Point' as const, coordinates: [station.lng, station.lat] },
+        properties: { id: station.id, name: station.name, lineId: station.lines[0] ?? '1' },
+      },
+    ],
+  }
+}
+
+// Fetch isochrone GeoJSON from tRPC endpoint via vanilla fetch
+async function fetchIsochrone(lat: number, lon: number): Promise<GeoJSON.FeatureCollection> {
+  const input = JSON.stringify({ json: { lat, lon } })
+  const res = await fetch(`/api/trpc/isochrone?input=${encodeURIComponent(input)}`)
+  const raw: unknown = await res.json()
+
+  console.log('[fetchIsochrone] raw tRPC response:', raw)
+
+  // httpBatchLink returns an array, single returns an object
+  // Handle both: [{ result: { data: { json: ... } } }] or { result: { data: { json: ... } } }
+  const envelope = Array.isArray(raw) ? raw[0] : raw
+
+  if (!envelope || typeof envelope !== 'object') {
+    throw new Error('Unexpected tRPC response shape')
+  }
+
+  if ('error' in envelope) {
+    console.error('[fetchIsochrone] tRPC returned error:', envelope)
+    throw new Error('tRPC isochrone query failed')
+  }
+
+  const result = (envelope as Record<string, unknown>).result as Record<string, unknown>
+  const data = result.data as Record<string, unknown>
+  return (data.json ?? data) as GeoJSON.FeatureCollection
+}
+
+const TRAVEL_TIMES: readonly TravelTime[] = [60, 30, 15] as const // render order: largest first
 
 export function MapContainer(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,6 +87,38 @@ export function MapContainer(): React.ReactElement {
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', async () => {
+      map.addSource('isochrone-polygons', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      })
+
+      // Add fill + outline layers for each time bucket (largest -> smallest)
+      for (const time of TRAVEL_TIMES) {
+        const colors = ISOCHRONE_COLORS[time]
+
+        map.addLayer({
+          id: `iso-fill-${time}`,
+          type: 'fill',
+          source: 'isochrone-polygons',
+          filter: ['==', ['get', 'contour'], time],
+          paint: {
+            'fill-color': colors.stroke,
+            'fill-opacity': time === 15 ? 0.25 : time === 30 ? 0.2 : 0.15,
+          },
+        })
+
+        map.addLayer({
+          id: `iso-outline-${time}`,
+          type: 'line',
+          source: 'isochrone-polygons',
+          filter: ['==', ['get', 'contour'], time],
+          paint: {
+            'line-color': colors.stroke,
+            'line-width': 2,
+          },
+        })
+      }
+
       // Subway Lines (static GeoJSON)
       const linesRes = await fetch('/data/lines.geojson')
       const linesData = (await linesRes.json()) as GeoJSON.FeatureCollection
@@ -85,13 +166,101 @@ export function MapContainer(): React.ReactElement {
         },
       })
 
-      // Re-paint station dots when StationLoader hydrates the store
+      // Selected Station Highlight
+      map.addSource('selected-station', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      })
+
+      map.addLayer({
+        id: 'selected-station-dot',
+        type: 'circle',
+        source: 'selected-station',
+        paint: {
+          'circle-radius': 9,
+          'circle-color': [
+            'match',
+            ['get', 'lineId'],
+            '1',
+            LINE_META['1'].color,
+            '2',
+            LINE_META['2'].color,
+            '4',
+            LINE_META['4'].color,
+            '#888888',
+          ],
+          'circle-stroke-width': 3,
+          'circle-stroke-color': '#ffffff',
+        },
+      })
+
+      // Click Handler
+      map.on('click', 'station-dots', (e) => {
+        const feature = e.features?.[0]
+        if (!feature) return
+
+        const clickedId = feature.properties?.id
+        if (typeof clickedId !== 'string') return
+
+        const station = useMapStore.getState().stations.find((s) => s.id === clickedId)
+        if (!station) return
+
+        useMapStore.getState().selectStation(station)
+      })
+
+      // Pointer cursor on hover
+      map.on('mouseenter', 'station-dots', () => {
+        map.getCanvas().style.cursor = 'pointer'
+      })
+      map.on('mouseleave', 'station-dots', () => {
+        map.getCanvas().style.cursor = ''
+      })
+
+      // Subscribe: station hydration
       useMapStore.subscribe(
         (state) => state.stations,
         (stations) => {
           const src = map.getSource('all-stations')
           if (src && 'setData' in src) {
-            ;(src as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(stations))
+            ; (src as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(stations))
+          }
+        }
+      )
+
+      // Subscribe: selected station → flyTo + highlight + fetch isochrone
+      useMapStore.subscribe(
+        (state) => state.selectedStation,
+        async (station) => {
+          // Update highlight dot
+          const highlightSrc = map.getSource('selected-station')
+          if (highlightSrc && 'setData' in highlightSrc) {
+            ; (highlightSrc as maplibregl.GeoJSONSource).setData(selectedStationGeoJSON(station))
+          }
+
+          if (!station) {
+            // Clear isochrone when deselected
+            const isoSrc = map.getSource('isochrone-polygons')
+            if (isoSrc && 'setData' in isoSrc) {
+              ; (isoSrc as maplibregl.GeoJSONSource).setData({
+                type: 'FeatureCollection',
+                features: [],
+              })
+            }
+            return
+          }
+
+          // Fly to selected station
+          map.flyTo({ center: [station.lng, station.lat], zoom: 13 })
+
+          // Fetch isochrone from Valhalla via tRPC
+          try {
+            const geojson = await fetchIsochrone(station.lat, station.lng)
+            const isoSrc = map.getSource('isochrone-polygons')
+            if (isoSrc && 'setData' in isoSrc) {
+              ; (isoSrc as maplibregl.GeoJSONSource).setData(geojson)
+            }
+          } catch (err) {
+            console.error('Failed to fetch isochrone:', err)
           }
         }
       )
