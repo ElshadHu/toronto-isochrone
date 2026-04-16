@@ -227,7 +227,7 @@ export function MapContainer(): React.ReactElement {
         }
       )
 
-      // Subscribe: selected station → flyTo + highlight + fetch isochrone
+      // Subscribe: selected station -> flyTo + highlight + fetch isochrone
       useMapStore.subscribe(
         (state) => state.selectedStation,
         async (station) => {
@@ -262,6 +262,37 @@ export function MapContainer(): React.ReactElement {
           } catch (err) {
             console.error('Failed to fetch isochrone:', err)
           }
+        }
+      )
+
+      // Subscribe: selectedTime -> isochrone layer visibility
+      // Cumulative: selecting 30m shows 15m + 30m; selecting 60m shows all three
+      useMapStore.subscribe(
+        (state) => state.selectedTime,
+        (time) => {
+          for (const t of TRAVEL_TIMES) {
+            const visible = t <= time
+            map.setLayoutProperty(`iso-fill-${t}`, 'visibility', visible ? 'visible' : 'none')
+            map.setLayoutProperty(`iso-outline-${t}`, 'visibility', visible ? 'visible' : 'none')
+          }
+        }
+      )
+
+      // Subscribe: enabledLines -> filter station dots + subway lines
+      useMapStore.subscribe(
+        (state) => state.enabledLines,
+        (enabledLines) => {
+          // Re-render station dots with only enabled-line stations
+          const allStations = useMapStore.getState().stations
+          const filtered = allStations.filter((s) => s.lines.some((l) => enabledLines.has(l)))
+          const stationSrc = map.getSource('all-stations')
+          if (stationSrc && 'setData' in stationSrc) {
+            ;(stationSrc as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(filtered))
+          }
+
+          // Filter subway line geometries by route_id
+          const lineIds = [...enabledLines]
+          map.setFilter('subway-lines-layer', ['in', ['get', 'route_id'], ['literal', lineIds]])
         }
       )
     })

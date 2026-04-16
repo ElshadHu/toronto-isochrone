@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "csv-stringify": "^6.7.0",
+    "fuse.js": "^7.3.0",
     "lucide-react": "^1.8.0",
     "maplibre-gl": "^5.22.0",
     "mysql2": "^3.22.0",
