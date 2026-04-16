@@ -4,21 +4,24 @@ import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { CARTO_DARK_MATTER, DEFAULT_ZOOM, LINE_META, TORONTO_CENTER } from '@/lib/constants'
+import { useMapStore } from '@/lib/store'
+import type { Station } from '@/server/types/station'
 
-import { api } from '@/trpc/client'
-
-// Hardcoded preview station — Bloor-Yonge
-const BLOOR_YONGE: [number, number] = [-79.386, 43.6709] // [lng, lat]
+// Convert Station[] into a GeoJSON FeatureCollection of Points
+function stationsToGeoJSON(stations: readonly Station[]): GeoJSON.FeatureCollection<GeoJSON.Point> {
+  return {
+    type: 'FeatureCollection',
+    features: stations.map((s) => ({
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] },
+      properties: { id: s.id, name: s.name, lineId: s.lines[0] ?? '1' },
+    })),
+  }
+}
 
 export function MapContainer(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
-
-  // 1. Fetch live Valhalla preview from tRPC!
-  const isochroneQuery = api.isochronePreview.useQuery(
-    { lat: BLOOR_YONGE[1], lon: BLOOR_YONGE[0] }, // Pass exact coordinates
-    { refetchOnWindowFocus: false, retry: false }
-  )
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -34,28 +37,64 @@ export function MapContainer(): React.ReactElement {
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
 
-    map.on('load', () => {
-      // 2. Wait until Map is loaded to ensure layer injection succeeds
-      map.addSource('station-preview', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: BLOOR_YONGE },
-          properties: { name: 'Bloor–Yonge', lineId: 'line-1' },
+    map.on('load', async () => {
+      // Subway Lines (static GeoJSON)
+      const linesRes = await fetch('/data/lines.geojson')
+      const linesData = (await linesRes.json()) as GeoJSON.FeatureCollection
+
+      map.addSource('subway-lines', { type: 'geojson', data: linesData })
+
+      map.addLayer({
+        id: 'subway-lines-layer',
+        type: 'line',
+        source: 'subway-lines',
+        paint: {
+          'line-color': ['get', 'color'],
+          'line-width': 3,
+          'line-opacity': 0.8,
         },
       })
 
+      // Station Dots (from Zustand store)
+      const initialStations = useMapStore.getState().stations
+
+      map.addSource('all-stations', {
+        type: 'geojson',
+        data: stationsToGeoJSON(initialStations),
+      })
+
       map.addLayer({
-        id: 'station-dot',
+        id: 'station-dots',
         type: 'circle',
-        source: 'station-preview',
+        source: 'all-stations',
         paint: {
-          'circle-radius': 7,
-          'circle-color': LINE_META['1'].color,
-          'circle-stroke-width': 2,
+          'circle-radius': 5,
+          'circle-color': [
+            'match',
+            ['get', 'lineId'],
+            '1',
+            LINE_META['1'].color,
+            '2',
+            LINE_META['2'].color,
+            '4',
+            LINE_META['4'].color,
+            '#888888',
+          ],
+          'circle-stroke-width': 1,
           'circle-stroke-color': '#ffffff',
         },
       })
+
+      // Re-paint station dots when StationLoader hydrates the store
+      useMapStore.subscribe(
+        (state) => state.stations,
+        (stations) => {
+          const src = map.getSource('all-stations')
+          if (src && 'setData' in src) {
+            ;(src as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(stations))
+          }
+        }
+      )
     })
 
     mapRef.current = map
@@ -65,58 +104,6 @@ export function MapContainer(): React.ReactElement {
       mapRef.current = null
     }
   }, [])
-
-  // 3. Effect loop to paint the Valhalla Polygons when they finish loading over tRPC
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map || isochroneQuery.isLoading || !isochroneQuery.data) return
-
-    // Clean up old source if hot-reloading
-    if (map.getSource('valhalla-isochrone')) {
-      ;(map.getSource('valhalla-isochrone') as maplibregl.GeoJSONSource).setData(
-        isochroneQuery.data as any
-      )
-      return
-    }
-
-    map.addSource('valhalla-isochrone', {
-      type: 'geojson',
-      // The API perfectly returns GeoJSON!
-      data: isochroneQuery.data as any,
-    })
-
-    // Draw the polygons (15/30/60 bounds) with opacity
-    map.addLayer(
-      {
-        id: 'valhalla-iso-layer',
-        type: 'fill',
-        source: 'valhalla-isochrone',
-        layout: {},
-        paint: {
-          // Valhalla natively injects contour colors into the GeoJSON properties!
-          'fill-color': ['concat', '#', ['get', 'color']],
-          'fill-opacity': 0.3,
-        },
-        // Insert polygon BELOW the station dot so it doesn't cover it
-      },
-      'station-dot'
-    )
-
-    // Optional: add a clean border outline to the polygons
-    map.addLayer(
-      {
-        id: 'valhalla-iso-outline',
-        type: 'line',
-        source: 'valhalla-isochrone',
-        layout: {},
-        paint: {
-          'line-color': ['concat', '#', ['get', 'color']],
-          'line-width': 2,
-        },
-      },
-      'station-dot'
-    )
-  }, [isochroneQuery.data, isochroneQuery.isLoading])
 
   return <div ref={containerRef} className="h-full w-full" />
 }
