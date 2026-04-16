@@ -81,6 +81,12 @@ export function MapContainer(): React.ReactElement {
       center: [...TORONTO_CENTER],
       zoom: DEFAULT_ZOOM,
       attributionControl: false,
+      minZoom: 9,
+      maxZoom: 16,
+      maxBounds: [
+        [-80.5, 43.2],
+        [-78.5, 44.2],
+      ],
     })
 
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
