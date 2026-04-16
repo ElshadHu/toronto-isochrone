@@ -26,15 +26,17 @@ const FeatureCollectionSchema = z.object({
   features: z.array(StationFeatureSchema),
 })
 
-// Output type
+// Output schema — validates stations.json shape at generation time
 
-type StationEntry = {
-  readonly id: string
-  readonly name: string
-  readonly lat: number
-  readonly lng: number
-  readonly lines: readonly string[]
-}
+const StationEntrySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  lat: z.number(),
+  lng: z.number(),
+  lines: z.array(z.string()).readonly(),
+})
+
+type StationEntry = z.infer<typeof StationEntrySchema>
 
 // Helpers
 
@@ -162,11 +164,12 @@ function deduplicateStations(
 }
 
 async function writeOutput(stations: readonly StationEntry[]): Promise<void> {
-  console.log('5. Writing public/data/stations.json...')
+  console.log('5. Validating + writing public/data/stations.json...')
+  const validated = z.array(StationEntrySchema).parse(stations)
   await fs.mkdir(PUBLIC_DATA_DIR, { recursive: true })
   await fs.writeFile(
     path.join(PUBLIC_DATA_DIR, 'stations.json'),
-    JSON.stringify(stations, null, 2),
+    JSON.stringify(validated, null, 2),
     'utf-8'
   )
 
