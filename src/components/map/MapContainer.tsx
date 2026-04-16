@@ -222,7 +222,7 @@ export function MapContainer(): React.ReactElement {
         (stations) => {
           const src = map.getSource('all-stations')
           if (src && 'setData' in src) {
-            ; (src as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(stations))
+            ;(src as maplibregl.GeoJSONSource).setData(stationsToGeoJSON(stations))
           }
         }
       )
@@ -234,14 +234,14 @@ export function MapContainer(): React.ReactElement {
           // Update highlight dot
           const highlightSrc = map.getSource('selected-station')
           if (highlightSrc && 'setData' in highlightSrc) {
-            ; (highlightSrc as maplibregl.GeoJSONSource).setData(selectedStationGeoJSON(station))
+            ;(highlightSrc as maplibregl.GeoJSONSource).setData(selectedStationGeoJSON(station))
           }
 
           if (!station) {
             // Clear isochrone when deselected
             const isoSrc = map.getSource('isochrone-polygons')
             if (isoSrc && 'setData' in isoSrc) {
-              ; (isoSrc as maplibregl.GeoJSONSource).setData({
+              ;(isoSrc as maplibregl.GeoJSONSource).setData({
                 type: 'FeatureCollection',
                 features: [],
               })
@@ -257,7 +257,7 @@ export function MapContainer(): React.ReactElement {
             const geojson = await fetchIsochrone(station.lat, station.lng)
             const isoSrc = map.getSource('isochrone-polygons')
             if (isoSrc && 'setData' in isoSrc) {
-              ; (isoSrc as maplibregl.GeoJSONSource).setData(geojson)
+              ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson)
             }
           } catch (err) {
             console.error('Failed to fetch isochrone:', err)
