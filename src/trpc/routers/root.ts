@@ -18,24 +18,16 @@ export const appRouter = router({
         greeting: `Hello ${input?.name ?? 'World'}`,
       }
     }),
-  // Temporary live mockup endpoint to bypass database and hit Valhalla directly for UI preview
-  isochronePreview: publicProcedure
+  // Fetch walking isochrone from Valhalla for a given station coordinate
+  isochrone: publicProcedure
     .input(z.object({ lat: z.number(), lon: z.number() }))
     .query(async ({ input }) => {
       try {
         const payload = {
           locations: [{ lat: input.lat, lon: input.lon }],
-          costing: 'transit',
-          contours: [
-            { time: 15, color: '00FF00' },
-            { time: 30, color: 'FFFF00' },
-            { time: 60, color: 'FF0000' },
-          ],
+          costing: 'pedestrian',
+          contours: [{ time: 15 }, { time: 30 }, { time: 60 }],
           polygons: true,
-          date_time: {
-            type: 1,
-            value: new Date().toISOString().slice(0, 16), // e.g. "2026-04-14T08:00"
-          },
         }
 
         const res = await fetch('http://localhost:8002/isochrone', {
