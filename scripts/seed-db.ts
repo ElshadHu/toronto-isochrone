@@ -44,7 +44,8 @@ async function main(): Promise<void> {
     for (const feature of linesGeoJSON.features) {
       const { route_id, name, color } = feature.properties
       await connection.execute(
-        'INSERT IGNORE INTO subway_lines (id, name, color) VALUES (?, ?, ?)',
+        `INSERT INTO subway_lines (id, name, color) VALUES (?, ?, ?)
+         ON DUPLICATE KEY UPDATE name = VALUES(name), color = VALUES(color)`,
         [route_id, name, color]
       )
     }
@@ -53,18 +54,24 @@ async function main(): Promise<void> {
     // Seed stations + station_lines
     for (const station of stations) {
       await connection.execute(
-        'INSERT IGNORE INTO stations (id, name, lat, lng) VALUES (?, ?, ?, ?)',
+        `INSERT INTO stations (id, name, lat, lng) VALUES (?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE name = VALUES(name), lat = VALUES(lat), lng = VALUES(lng)`,
         [station.id, station.name, station.lat, station.lng]
       )
 
       for (const lineId of station.lines) {
         await connection.execute(
-          'INSERT IGNORE INTO station_lines (station_id, line_id) VALUES (?, ?)',
+          `INSERT INTO station_lines (station_id, line_id) VALUES (?, ?)
+           ON DUPLICATE KEY UPDATE station_id = station_id`,
           [station.id, lineId]
         )
       }
     }
     console.log(`Seeded ${stations.length} stations with line associations`)
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error(`Seed failed: ${message}`)
+    process.exit(1)
   } finally {
     await connection.end()
   }
