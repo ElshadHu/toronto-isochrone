@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { api } from '@/trpc/client'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import {
@@ -40,37 +41,12 @@ function selectedStationGeoJSON(station: Station | null): GeoJSON.FeatureCollect
   }
 }
 
-// Fetch isochrone GeoJSON from tRPC endpoint via vanilla fetch
-async function fetchIsochrone(lat: number, lon: number): Promise<GeoJSON.FeatureCollection> {
-  const input = JSON.stringify({ json: { lat, lon } })
-  const res = await fetch(`/api/trpc/isochrone?input=${encodeURIComponent(input)}`)
-  const raw: unknown = await res.json()
-
-  console.log('[fetchIsochrone] raw tRPC response:', raw)
-
-  // httpBatchLink returns an array, single returns an object
-  // Handle both: [{ result: { data: { json: ... } } }] or { result: { data: { json: ... } } }
-  const envelope = Array.isArray(raw) ? raw[0] : raw
-
-  if (!envelope || typeof envelope !== 'object') {
-    throw new Error('Unexpected tRPC response shape')
-  }
-
-  if ('error' in envelope) {
-    console.error('[fetchIsochrone] tRPC returned error:', envelope)
-    throw new Error('tRPC isochrone query failed')
-  }
-
-  const result = (envelope as Record<string, unknown>).result as Record<string, unknown>
-  const data = result.data as Record<string, unknown>
-  return (data.json ?? data) as GeoJSON.FeatureCollection
-}
-
 const TRAVEL_TIMES: readonly TravelTime[] = [60, 30, 15] as const // render order: largest first
 
 export function MapContainer(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
+  const utils = api.useUtils()
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -260,10 +236,13 @@ export function MapContainer(): React.ReactElement {
 
           // Fetch isochrone from Valhalla via tRPC
           try {
-            const geojson = await fetchIsochrone(station.lat, station.lng)
+            const geojson = await utils.isochrone.fetch(
+              { stationId: station.id },
+              { staleTime: 5 * 60_000 }
+            )
             const isoSrc = map.getSource('isochrone-polygons')
             if (isoSrc && 'setData' in isoSrc) {
-              ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson)
+              ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson as GeoJSON.FeatureCollection)
             }
           } catch (err) {
             console.error('Failed to fetch isochrone:', err)
@@ -341,10 +320,13 @@ export function MapContainer(): React.ReactElement {
         }
         map.flyTo({ center: [persistedStation.lng, persistedStation.lat], zoom: 13 })
         try {
-          const geojson = await fetchIsochrone(persistedStation.lat, persistedStation.lng)
+          const geojson = await utils.isochrone.fetch(
+            { stationId: persistedStation.id },
+            { staleTime: 5 * 60_000 }
+          )
           const isoSrc = map.getSource('isochrone-polygons')
           if (isoSrc && 'setData' in isoSrc) {
-            ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson)
+            ;(isoSrc as maplibregl.GeoJSONSource).setData(geojson as GeoJSON.FeatureCollection)
           }
         } catch (err) {
           console.error('Failed to restore isochrone:', err)
@@ -358,7 +340,7 @@ export function MapContainer(): React.ReactElement {
       map.remove()
       mapRef.current = null
     }
-  }, [])
+  }, [utils.isochrone])
 
   return <div ref={containerRef} className="h-full w-full" />
 }
