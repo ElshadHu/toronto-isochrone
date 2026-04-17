@@ -9,7 +9,17 @@ import type { AppRouter } from '@/trpc/routers/root'
 
 export const api = createTRPCReact<AppRouter>()
 
-const createQueryClient = () => new QueryClient()
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60_000, // 1 min
+        gcTime: 10 * 60_000, // 10 min cache
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
+    },
+  })
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
 const getQueryClient = () => {
