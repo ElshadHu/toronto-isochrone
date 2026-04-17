@@ -1,14 +1,14 @@
 import mysql from 'mysql2/promise'
 
-const databaseUrl = process.env.DATABASE_URL
+type Pool = ReturnType<typeof mysql.createPool>
 
-if (typeof databaseUrl !== 'string' || databaseUrl.length === 0) {
-  throw new Error('DATABASE_URL environment variable is missing or empty')
-}
-
-const createPool = () => {
+const createPool = (): Pool => {
+  const url = process.env.DATABASE_URL
+  if (typeof url !== 'string' || url.length === 0) {
+    throw new Error('DATABASE_URL environment variable is missing or empty')
+  }
   return mysql.createPool({
-    uri: databaseUrl,
+    uri: url,
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10,
@@ -20,11 +20,19 @@ const createPool = () => {
 declare global {
   // TypeScript requires `var` for global scope declarations
   // eslint-disable-next-line no-var
-  var __mysqlPool: ReturnType<typeof createPool> | undefined
+  var __mysqlPool: Pool | undefined
 }
 
-export const db = globalThis.__mysqlPool ?? createPool()
+let _db: Pool | undefined = globalThis.__mysqlPool
 
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.__mysqlPool = db
-}
+export const db: Pool = new Proxy({} as Pool, {
+  get(_, prop) {
+    if (!_db) {
+      _db = createPool()
+      if (process.env.NODE_ENV !== 'production') {
+        globalThis.__mysqlPool = _db
+      }
+    }
+    return Reflect.get(_db, prop)
+  },
+})
