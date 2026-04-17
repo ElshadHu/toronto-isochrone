@@ -2,19 +2,16 @@
 
 import { useEffect } from 'react'
 import { useMapStore } from '@/lib/store'
-import type { Station } from '@/server/types/station'
+import { api } from '@/trpc/client'
 
-//  Side-effect component which fetches pipeline-validated stations.json on mount
-//  and hydrates the Zustand store
 export function StationLoader(): null {
+  const { data } = api.getStations.useQuery(undefined, {
+    staleTime: Infinity, // stations never change at runtime
+  })
   useEffect(() => {
-    const load = async (): Promise<void> => {
-      const res = await fetch('/data/stations.json')
-      const stations: Station[] = await res.json()
-      useMapStore.getState().setStations(stations)
+    if (data) {
+      useMapStore.getState().setStations(data)
     }
-    void load()
-  }, [])
-
+  }, [data])
   return null
 }
