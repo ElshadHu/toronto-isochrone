@@ -13,7 +13,7 @@ export function TravelTimeToggle(): React.ReactElement {
 
   return (
     <div>
-      <p className="mb-2 hidden text-[11px] font-medium tracking-wide text-zinc-500 uppercase md:block">
+      <p className="mb-2 text-[11px] font-medium tracking-wide text-zinc-400 uppercase">
         Walking time from station
       </p>
       <div className="flex shrink-0 gap-2">
