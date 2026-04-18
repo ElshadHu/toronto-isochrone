@@ -25,8 +25,10 @@ export function SelectedStationCard(): React.ReactElement {
     <div className="rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 md:px-4 md:py-3">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-white">{selectedStation.name}</p>
-          <div className="mt-1.5 hidden flex-wrap gap-1 md:flex">
+          <p className="text-sm leading-tight font-semibold break-words text-white">
+            {selectedStation.name}
+          </p>
+          <div className="mt-1.5 flex flex-wrap gap-1">
             {selectedStation.lines.map((lineId) => {
               const meta = LINE_META[lineId]
               return (
@@ -44,7 +46,7 @@ export function SelectedStationCard(): React.ReactElement {
         <Button
           variant="ghost"
           size="icon-sm"
-          className="shrink-0 text-zinc-400 hover:text-white"
+          className="mt-0.5 shrink-0 text-zinc-400 hover:text-white"
           onClick={() => selectStation(null)}
           aria-label="Deselect station"
         >

@@ -12,7 +12,7 @@ export function LineFilter(): React.ReactElement {
   const toggleLine = useMapStore((s) => s.toggleLine)
 
   return (
-    <div className="hidden md:block">
+    <div>
       <p className="mb-2 text-[11px] font-medium tracking-wide text-zinc-500 uppercase">
         Filter lines
       </p>
