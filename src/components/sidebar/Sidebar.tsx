@@ -19,7 +19,7 @@ export function Sidebar(): React.ReactElement {
           <h1 className="text-sm font-semibold tracking-tight text-white md:text-lg">
             Toronto Isochrone
           </h1>
-          <p className="mt-1 hidden text-xs text-zinc-500 md:block">
+          <p className="mt-1 text-xs text-zinc-400">
             Transit reachability from every TTC subway station.
           </p>
         </div>
