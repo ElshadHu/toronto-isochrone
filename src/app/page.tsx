@@ -4,12 +4,12 @@ import { StationLoader } from '@/components/map/StationLoader'
 
 export default function Home(): React.ReactElement {
   return (
-    <div className="flex h-full flex-col-reverse md:flex-row">
-      <Sidebar />
-      <main className="min-h-0 flex-1">
+    <div className="relative h-full w-full overflow-hidden">
+      <main className="h-full w-full">
         <StationLoader />
         <MapWrapper />
       </main>
+      <Sidebar />
     </div>
   )
 }
