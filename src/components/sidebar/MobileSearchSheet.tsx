@@ -44,15 +44,15 @@ export function MobileSearchSheet({ open, onClose }: Props): React.ReactElement 
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Focus input when sheet opens
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 150)
-    } else {
-      setQuery('')
-      setFocusedIndex(-1)
-    }
+    if (open) setTimeout(() => inputRef.current?.focus(), 150)
   }, [open])
+
+  const handleClose = useCallback(() => {
+    setQuery('')
+    setFocusedIndex(-1)
+    onClose()
+  }, [onClose])
 
   const fuse = useMemo(
     () =>
@@ -98,21 +98,21 @@ export function MobileSearchSheet({ open, onClose }: Props): React.ReactElement 
       } else if (e.key === 'Enter') {
         if (clampedFocus >= 0 && visibleStations[clampedFocus]) {
           selectStation(visibleStations[clampedFocus].station)
-          onClose()
+          handleClose()
         }
       } else if (e.key === 'Escape') {
-        onClose()
+        handleClose()
       }
     },
-    [clampedFocus, visibleStations, selectStation, onClose]
+    [clampedFocus, visibleStations, selectStation, handleClose]
   )
 
   const handleSelect = useCallback(
     (station: Station) => {
       selectStation(station)
-      onClose()
+      handleClose()
     },
-    [selectStation, onClose]
+    [selectStation, handleClose]
   )
 
   return (
@@ -122,7 +122,7 @@ export function MobileSearchSheet({ open, onClose }: Props): React.ReactElement 
         className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
-        onClick={onClose}
+        onClick={handleClose}
         aria-hidden="true"
       />
 
@@ -146,7 +146,7 @@ export function MobileSearchSheet({ open, onClose }: Props): React.ReactElement 
             variant="ghost"
             size="icon-sm"
             className="shrink-0 text-zinc-400 hover:text-white"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close search"
           >
             <X className="size-4" />
