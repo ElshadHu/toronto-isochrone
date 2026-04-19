@@ -8,12 +8,12 @@ const ALL_LINE_IDS = Object.keys(LINE_META) as LineId[]
 type MapState = {
   stations: Station[]
   selectedStation: Station | null
-  selectedTime: TravelTime
+  selectedTime: TravelTime | null
   enabledLines: Set<LineId>
 
   setStations: (stations: Station[]) => void
   selectStation: (station: Station | null) => void
-  setSelectedTime: (time: TravelTime) => void
+  setSelectedTime: (time: TravelTime | null) => void
   toggleLine: (line: LineId) => void
 }
 
@@ -23,7 +23,7 @@ export const useMapStore = create<MapState>()(
       (set) => ({
         stations: [],
         selectedStation: null,
-        selectedTime: 15,
+        selectedTime: 15 as TravelTime | null,
         enabledLines: new Set(ALL_LINE_IDS),
 
         setStations: (stations) => set({ stations }),
@@ -56,13 +56,13 @@ export const useMapStore = create<MapState>()(
         merge: (persisted: unknown, current) => {
           const p = persisted as {
             selectedStation?: Station | null
-            selectedTime?: TravelTime
+            selectedTime?: TravelTime | null
             enabledLines?: LineId[]
           }
           return {
             ...current,
             selectedStation: p.selectedStation ?? null,
-            selectedTime: p.selectedTime ?? 15,
+            selectedTime: p.selectedTime ?? null,
             enabledLines: new Set(p.enabledLines ?? ALL_LINE_IDS),
           }
         },

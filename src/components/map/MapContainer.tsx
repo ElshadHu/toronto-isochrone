@@ -256,7 +256,7 @@ export function MapContainer(): React.ReactElement {
         (state) => state.selectedTime,
         (time) => {
           for (const t of TRAVEL_TIMES) {
-            const visible = t <= time
+            const visible = time !== null && t <= time
             map.setLayoutProperty(`iso-fill-${t}`, 'visibility', visible ? 'visible' : 'none')
             map.setLayoutProperty(`iso-outline-${t}`, 'visibility', visible ? 'visible' : 'none')
           }
@@ -290,7 +290,7 @@ export function MapContainer(): React.ReactElement {
 
       // Re-apply selectedTime layer visibility
       for (const t of TRAVEL_TIMES) {
-        const visible = t <= persistedTime
+        const visible = persistedTime !== null && t <= persistedTime
         map.setLayoutProperty(`iso-fill-${t}`, 'visibility', visible ? 'visible' : 'none')
         map.setLayoutProperty(`iso-outline-${t}`, 'visibility', visible ? 'visible' : 'none')
       }

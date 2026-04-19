@@ -11,6 +11,17 @@ export function TravelTimeToggle(): React.ReactElement {
   const selectedTime = useMapStore((s) => s.selectedTime)
   const setSelectedTime = useMapStore((s) => s.setSelectedTime)
 
+  function handleClick(t: TravelTime) {
+    if (t === selectedTime) {
+      // Step down: 60m -> 30m, 30m -> 15m, 15m -> null
+      const currentIndex = TIMES.indexOf(t)
+      const prev = currentIndex > 0 ? TIMES[currentIndex - 1] : null
+      setSelectedTime(prev ?? null)
+    } else {
+      setSelectedTime(t)
+    }
+  }
+
   return (
     <div>
       <p className="mb-2 text-[11px] font-medium tracking-wide text-zinc-400 uppercase">
@@ -30,7 +41,7 @@ export function TravelTimeToggle(): React.ReactElement {
               style={
                 isActive ? { borderColor: color, color, backgroundColor: `${color}15` } : undefined
               }
-              onClick={() => setSelectedTime(t)}
+              onClick={() => handleClick(t)}
             >
               {t}m
             </Button>
