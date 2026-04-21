@@ -45,12 +45,14 @@ export async function filterSubwayLines(): Promise<void> {
 
   const stringifier = stringify({ header: true })
 
+  // Exact route IDs
+  const allowedRouteIds = new Set(['1', '2', '4', '5', '6'])
+
   const streamProcessing = async (): Promise<void> => {
     for await (const row of readStream.pipe(parser)) {
       const parsed = GtfsRouteSchema.safeParse(row)
 
-      // route_type "1" is standard GTFS for Subway/Metro
-      if (parsed.success && parsed.data.route_type === '1') {
+      if (parsed.success && allowedRouteIds.has(parsed.data.route_id)) {
         stringifier.write(parsed.data)
       }
     }

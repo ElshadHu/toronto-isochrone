@@ -20,15 +20,18 @@ const StopSchema = z
   })
   .passthrough()
 
+// Exact route IDs
+const allowedRouteIds = new Set(['1', '2', '4', '5', '6'])
+
 export async function filterStationsAndTrips(): Promise<void> {
-  console.log('1. Identifying active Subway Routes...')
+  console.log('1. Identifying active Subway + LRT Routes...')
   const subwayRouteIds = new Set<string>()
   const routeParser = createReadStream(path.join(RAW_DIR, 'routes.txt')).pipe(
     parse({ columns: true })
   )
   for await (const row of routeParser) {
     const p = RouteSchema.safeParse(row)
-    if (p.success && p.data.route_type === '1') subwayRouteIds.add(p.data.route_id)
+    if (p.success && allowedRouteIds.has(p.data.route_id)) subwayRouteIds.add(p.data.route_id)
   }
 
   console.log('2. Isolating Subway Trips...')
