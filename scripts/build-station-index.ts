@@ -40,10 +40,14 @@ type StationEntry = z.infer<typeof StationEntrySchema>
 
 // Helpers
 
-// "Finch Station - Southbound Platform" -> "Finch Station"
+// "Finch Station - Southbound Platform" -> "Finch Station"   (subway)
 function toBaseName(name: string): string {
-  const idx = name.indexOf(' - ')
-  return idx === -1 ? name : name.slice(0, idx)
+  // Subway pattern: "Name - Direction Platform"
+  const dashIdx = name.indexOf(' - ')
+  if (dashIdx !== -1) return name.slice(0, dashIdx)
+
+  // LRT patterns: strip directional / modal platform suffixes
+  return name.replace(/\s+(Eastbound|Westbound|Northbound|Southbound|LRT)\s+Platform$/i, '').trim()
 }
 
 // "Finch Station" -> "finch"
