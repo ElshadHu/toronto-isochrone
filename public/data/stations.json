@@ -1,5 +1,26 @@
 [
   {
+    "id": "aga-khan-park-museum",
+    "name": "Aga Khan Park & Museum Station",
+    "lat": 43.722419,
+    "lng": -79.33269200000001,
+    "lines": ["5"]
+  },
+  {
+    "id": "albion",
+    "name": "Albion Station",
+    "lat": 43.7411705,
+    "lng": -79.58918299999999,
+    "lines": ["6"]
+  },
+  {
+    "id": "avenue",
+    "name": "Avenue Station",
+    "lat": 43.7048125,
+    "lng": -79.408895,
+    "lines": ["5"]
+  },
+  {
     "id": "bathurst",
     "name": "Bathurst Station",
     "lat": 43.665799,
@@ -28,6 +49,13 @@
     "lines": ["4"]
   },
   {
+    "id": "birchmount",
+    "name": "Birchmount Station",
+    "lat": 43.730181,
+    "lng": -79.27705399999999,
+    "lines": ["5"]
+  },
+  {
     "id": "bloor",
     "name": "Bloor Station",
     "lat": 43.6705465,
@@ -42,6 +70,13 @@
     "lines": ["2"]
   },
   {
+    "id": "caledonia",
+    "name": "Caledonia Station",
+    "lat": 43.692347999999996,
+    "lng": -79.465389,
+    "lines": ["5"]
+  },
+  {
     "id": "castle-frank",
     "name": "Castle Frank Station",
     "lat": 43.673799,
@@ -51,9 +86,16 @@
   {
     "id": "cedarvale",
     "name": "Cedarvale Station",
-    "lat": 43.699998,
-    "lng": -79.43649099999999,
-    "lines": ["1"]
+    "lat": 43.6994785,
+    "lng": -79.43624949999999,
+    "lines": ["1", "5"]
+  },
+  {
+    "id": "chaplin",
+    "name": "Chaplin Station",
+    "lat": 43.702961,
+    "lng": -79.4174035,
+    "lines": ["5"]
   },
   {
     "id": "chester",
@@ -98,6 +140,13 @@
     "lines": ["4"]
   },
   {
+    "id": "don-valley",
+    "name": "Don Valley Station",
+    "lat": 43.720012,
+    "lng": -79.339178,
+    "lines": ["5"]
+  },
+  {
     "id": "donlands",
     "name": "Donlands Station",
     "lat": 43.681049,
@@ -112,11 +161,25 @@
     "lines": ["1"]
   },
   {
+    "id": "driftwood",
+    "name": "Driftwood Station",
+    "lat": 43.758068,
+    "lng": -79.51335449999999,
+    "lines": ["6"]
+  },
+  {
     "id": "dufferin",
     "name": "Dufferin Station",
     "lat": 43.660699,
     "lng": -79.43478999999999,
     "lines": ["2"]
+  },
+  {
+    "id": "duncanwoods",
+    "name": "Duncanwoods Station",
+    "lat": 43.7488275,
+    "lng": -79.557553,
+    "lines": ["6"]
   },
   {
     "id": "dundas-west",
@@ -135,9 +198,23 @@
   {
     "id": "eglinton",
     "name": "Eglinton Station",
-    "lat": 43.705597999999995,
-    "lng": -79.39864,
-    "lines": ["1"]
+    "lat": 43.7060165,
+    "lng": -79.39880775,
+    "lines": ["1", "5"]
+  },
+  {
+    "id": "emery",
+    "name": "Emery Station",
+    "lat": 43.752080500000005,
+    "lng": -79.542392,
+    "lines": ["6"]
+  },
+  {
+    "id": "fairbank",
+    "name": "Fairbank Station",
+    "lat": 43.695767000000004,
+    "lng": -79.4494425,
+    "lines": ["5"]
   },
   {
     "id": "finch",
@@ -149,9 +226,16 @@
   {
     "id": "finch-west",
     "name": "Finch West Station",
-    "lat": 43.764855,
-    "lng": -79.491118,
-    "lines": ["1"]
+    "lat": 43.76404925,
+    "lng": -79.490932,
+    "lines": ["1", "6"]
+  },
+  {
+    "id": "forest-hill",
+    "name": "Forest Hill Station",
+    "lat": 43.701199,
+    "lng": -79.42530199999999,
+    "lines": ["5"]
   },
   {
     "id": "glencairn",
@@ -161,11 +245,25 @@
     "lines": ["1"]
   },
   {
+    "id": "golden-mile",
+    "name": "Golden Mile Station",
+    "lat": 43.7278655,
+    "lng": -79.28762649999999,
+    "lines": ["5"]
+  },
+  {
     "id": "greenwood",
     "name": "Greenwood Station",
     "lat": 43.682699,
     "lng": -79.330837,
     "lines": ["2"]
+  },
+  {
+    "id": "hakimi-lebovic",
+    "name": "Hakimi Lebovic Station",
+    "lat": 43.726997,
+    "lng": -79.2915545,
+    "lines": ["5"]
   },
   {
     "id": "high-park",
@@ -182,11 +280,32 @@
     "lines": ["1"]
   },
   {
+    "id": "humber-college",
+    "name": "Humber College Station",
+    "lat": 43.729898000000006,
+    "lng": -79.6015305,
+    "lines": ["6"]
+  },
+  {
+    "id": "ionview",
+    "name": "Ionview Station",
+    "lat": 43.731311500000004,
+    "lng": -79.27209250000001,
+    "lines": ["5"]
+  },
+  {
     "id": "islington",
     "name": "Islington Station",
     "lat": 43.645398,
     "lng": -79.52414350000001,
     "lines": ["2"]
+  },
+  {
+    "id": "jane-and-finch",
+    "name": "Jane and Finch Station",
+    "lat": 43.757248000000004,
+    "lng": -79.5177125,
+    "lines": ["6"]
   },
   {
     "id": "jane",
@@ -203,11 +322,18 @@
     "lines": ["2"]
   },
   {
+    "id": "keelesdale",
+    "name": "Keelesdale Station",
+    "lat": 43.690512999999996,
+    "lng": -79.47467599999999,
+    "lines": ["5"]
+  },
+  {
     "id": "kennedy",
     "name": "Kennedy Station",
-    "lat": 43.732318,
-    "lng": -79.2642515,
-    "lines": ["2"]
+    "lat": 43.7325545,
+    "lng": -79.26436575,
+    "lines": ["2", "5"]
   },
   {
     "id": "king",
@@ -222,6 +348,13 @@
     "lat": 43.637519999999995,
     "lng": -79.53579300000001,
     "lines": ["2"]
+  },
+  {
+    "id": "laird",
+    "name": "Laird Station",
+    "lat": 43.713269,
+    "lng": -79.3650305,
+    "lines": ["5"]
   },
   {
     "id": "lansdowne",
@@ -245,6 +378,13 @@
     "lines": ["1"]
   },
   {
+    "id": "leaside",
+    "name": "Leaside Station",
+    "lat": 43.7108765,
+    "lng": -79.3766885,
+    "lines": ["5"]
+  },
+  {
     "id": "leslie",
     "name": "Leslie Station",
     "lat": 43.771298,
@@ -259,6 +399,41 @@
     "lines": ["2"]
   },
   {
+    "id": "martin-grove",
+    "name": "Martin Grove Station",
+    "lat": 43.7367395,
+    "lng": -79.59191849999999,
+    "lines": ["6"]
+  },
+  {
+    "id": "milvan-rumike",
+    "name": "Milvan Rumike Station",
+    "lat": 43.749971,
+    "lng": -79.55230900000001,
+    "lines": ["6"]
+  },
+  {
+    "id": "mount-dennis",
+    "name": "Mount Dennis Station",
+    "lat": 43.688025,
+    "lng": -79.485789,
+    "lines": ["5"]
+  },
+  {
+    "id": "mount-olive",
+    "name": "Mount Olive Station",
+    "lat": 43.7433025,
+    "lng": -79.5817815,
+    "lines": ["6"]
+  },
+  {
+    "id": "mount-pleasant",
+    "name": "Mount Pleasant Station",
+    "lat": 43.7085845,
+    "lng": -79.3904355,
+    "lines": ["5"]
+  },
+  {
     "id": "museum",
     "name": "Museum Station",
     "lat": 43.666599,
@@ -266,11 +441,32 @@
     "lines": ["1"]
   },
   {
+    "id": "norfinch-oakdale",
+    "name": "Norfinch Oakdale Station",
+    "lat": 43.755943,
+    "lng": -79.5242515,
+    "lines": ["6"]
+  },
+  {
     "id": "north-york-centre",
     "name": "North York Centre Station",
     "lat": 43.767947,
     "lng": -79.412542,
     "lines": ["1"]
+  },
+  {
+    "id": "o-connor",
+    "name": "O'Connor Station",
+    "lat": 43.7248255,
+    "lng": -79.301785,
+    "lines": ["5"]
+  },
+  {
+    "id": "oakwood",
+    "name": "Oakwood Station",
+    "lat": 43.6974855,
+    "lng": -79.442958,
+    "lines": ["5"]
   },
   {
     "id": "old-mill",
@@ -301,6 +497,20 @@
     "lines": ["2"]
   },
   {
+    "id": "pearldale",
+    "name": "Pearldale Station",
+    "lat": 43.747743,
+    "lng": -79.56249700000001,
+    "lines": ["6"]
+  },
+  {
+    "id": "pharmacy",
+    "name": "Pharmacy Station",
+    "lat": 43.725840500000004,
+    "lng": -79.296742,
+    "lines": ["5"]
+  },
+  {
     "id": "pioneer-village",
     "name": "Pioneer Village Station",
     "lat": 43.776745500000004,
@@ -329,6 +539,13 @@
     "lines": ["1"]
   },
   {
+    "id": "rowntree-mills",
+    "name": "Rowntree Mills Station",
+    "lat": 43.746311,
+    "lng": -79.5685795,
+    "lines": ["6"]
+  },
+  {
     "id": "royal-york",
     "name": "Royal York Station",
     "lat": 43.648448,
@@ -341,6 +558,13 @@
     "lat": 43.651899,
     "lng": -79.475842,
     "lines": ["2"]
+  },
+  {
+    "id": "sentinel",
+    "name": "Sentinel Station",
+    "lat": 43.761080500000006,
+    "lng": -79.500039,
+    "lines": ["6"]
   },
   {
     "id": "sheppard-west",
@@ -362,6 +586,20 @@
     "lat": 43.6721385,
     "lng": -79.3761675,
     "lines": ["2"]
+  },
+  {
+    "id": "signet-arrow",
+    "name": "Signet Arrow Station",
+    "lat": 43.7532925,
+    "lng": -79.5362255,
+    "lines": ["6"]
+  },
+  {
+    "id": "sloane",
+    "name": "Sloane Station",
+    "lat": 43.72592,
+    "lng": -79.31268,
+    "lines": ["5"]
   },
   {
     "id": "spadina",
@@ -406,6 +644,13 @@
     "lines": ["1"]
   },
   {
+    "id": "stevenson",
+    "name": "Stevenson Station",
+    "lat": 43.743218999999996,
+    "lng": -79.586949,
+    "lines": ["6"]
+  },
+  {
     "id": "summerhill",
     "name": "Summerhill Station",
     "lat": 43.682699,
@@ -413,11 +658,25 @@
     "lines": ["1"]
   },
   {
+    "id": "sunnybrook-park",
+    "name": "Sunnybrook Park Station",
+    "lat": 43.7173085,
+    "lng": -79.34913449999999,
+    "lines": ["5"]
+  },
+  {
     "id": "tmu",
     "name": "TMU Station",
     "lat": 43.656549,
     "lng": -79.380988,
     "lines": ["1"]
+  },
+  {
+    "id": "tobermory",
+    "name": "Tobermory Station",
+    "lat": 43.7593325,
+    "lng": -79.50791799999999,
+    "lines": ["6"]
   },
   {
     "id": "union",
@@ -455,6 +714,13 @@
     "lines": ["1"]
   },
   {
+    "id": "westmore",
+    "name": "Westmore Station",
+    "lat": 43.734750000000005,
+    "lng": -79.600709,
+    "lines": ["6"]
+  },
+  {
     "id": "wilson",
     "name": "Wilson Station",
     "lat": 43.734448,
@@ -467,6 +733,13 @@
     "lat": 43.686499,
     "lng": -79.313136,
     "lines": ["2"]
+  },
+  {
+    "id": "wynford",
+    "name": "Wynford Station",
+    "lat": 43.724083,
+    "lng": -79.32666,
+    "lines": ["5"]
   },
   {
     "id": "yonge",
