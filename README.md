@@ -1,22 +1,22 @@
 # Toronto Isochrone
 
-A map that shows how far you can walk from any Toronto subway station in 15, 30, or 60 minutes.
+A map that shows how far you can walk from any Toronto transit station in 15, 30, or 60 minutes.
 
-I wanted to answer a simple question: if you step out of a TTC subway station and start walking, how much of the city can you actually reach? The answer depends on the station. Some stations sit in dense grids where you can cover a lot of ground. Others are surrounded by ravines, highways, or dead-end streets that cut your range short. I wanted to see that difference on a map.
+I wanted to answer a simple question: if you step out of a TTC station and start walking, how much of the city can you actually reach? The answer depends on the station. Some stations sit in dense grids where you can cover a lot of ground. Others are surrounded by ravines, highways, or dead-end streets that cut your range short. I wanted to see that difference on a map.
 
 ## How It Works
 
-The app shows  71 TTC subway stations across 3 subway lines on a dark map. Click a station and colored areas appear around it. Green is 15 minutes of walking, orange is 30, red is 60. The shapes are not simple circles. They follow the actual street network, so they stretch along walkable corridors and shrink where roads or terrain block the way.
+The app shows 110 TTC stations across 5 transit lines (3 subway + 2 light rail) on a dark map. Click a station and colored areas appear around it. Green is 15 minutes of walking, orange is 30, red is 60. The shapes are not simple circles. They follow the actual street network, so they stretch along walkable corridors and shrink where roads or terrain block the way.
 
 ## How the Data Gets In
 
 The data pipeline has two stages: building the station data and computing the walking areas.
 
-**Stage 1: Station data from the TTC transit feed.** A set of scripts downloads the official GTFS feed from the Toronto Open Data portal, filters it down to subway-only routes, extracts the 71 station locations with their line associations, and writes two files: `stations.json` and `lines.geojson`. These are the raw ingredients.
+**Stage 1: Station data from the TTC transit feed.** A set of scripts downloads the official GTFS feed from the Toronto Open Data portal, filters it to the five rapid transit routes (Lines 1, 2, 4, 5, 6), extracts 110 station locations with their line associations, and writes two files: `stations.json` and `lines.geojson`. These are the raw ingredients.
 
-**Stage 2: Walking areas from Valhalla.** Valhalla is an open-source routing engine that runs locally in a Docker container, loaded with OpenStreetMap road data for Ontario. For each of the 71 stations, a script sends the station coordinates to Valhalla and asks: draw me polygons for 15, 30, and 60 minutes of pedestrian walking. Valhalla returns a GeoJSON FeatureCollection with 3 polygon features per station. Each response is about 8.5KB.
+**Stage 2: Walking areas from Valhalla.** Valhalla is an open-source routing engine that runs locally in a Docker container, loaded with OpenStreetMap road data for Ontario. For each of the 110 stations, a script sends the station coordinates to Valhalla and asks: draw me polygons for 15, 30, and 60 minutes of pedestrian walking. Valhalla returns a GeoJSON FeatureCollection with 3 polygon features per station.
 
-**Stage 3: Everything goes into MySQL.** A seed script reads the station and line files and inserts them into the database (subway_lines, stations, station_lines tables). A separate compute script runs all 71 Valhalla calls with a concurrency limit of 2, stores each full FeatureCollection as a single row in the isochrones table. One row per station, 71 rows total. The script is resume-friendly: if it crashes halfway, it skips stations that already have data.
+**Stage 3: Everything goes into MySQL.** A seed script reads the station and line files and inserts them into the database (subway_lines, stations, station_lines tables). A separate compute script runs all 110 Valhalla calls with a concurrency limit of 2, stores each full FeatureCollection as a single row in the isochrones table. One row per station, 110 rows total. The script is resume-friendly: if it crashes halfway, it skips stations that already have data.
 
 The key decision was to precompute everything. Valhalla calls take a few hundred milliseconds each, which is fine for a batch job but too slow for a user clicking around a map. By storing the results in MySQL, the app serves precomputed GeoJSON blobs in under 10ms per station. React Query on the frontend caches responses per station, so clicking the same station twice costs zero network requests.
 
@@ -28,7 +28,7 @@ Next.js 16, React 19, MapLibre GL JS, tRPC, React Query, Zustand, Valhalla (Dock
 
 The backend exposes tRPC procedures at `/api/trpc/`:
 
-- `getStations` - returns all 71 stations with their line associations
+- `getStations` - returns all 110 stations with their line associations
 - `isochrone` - takes a station ID, returns the precomputed walking area polygons from the database. Falls back to a live Valhalla call if the station has no precomputed data.
 - `healthcheck` - reports server and database status
 
@@ -71,7 +71,7 @@ DATABASE_URL="mysql://isochrone_user:securepassword@localhost:3306/toronto_isoch
 DATABASE_URL="mysql://isochrone_user:securepassword@localhost:3306/toronto_isochrone" \
   npm run script:seed-db
 
-# 4. Compute walking areas for all 71 stations (takes a few minutes)
+# 4. Compute walking areas for all 110 stations (takes a few minutes)
 DATABASE_URL="mysql://isochrone_user:securepassword@localhost:3306/toronto_isochrone" \
   npm run script:compute-isochrones
 ```
