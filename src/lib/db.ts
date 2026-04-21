@@ -18,8 +18,6 @@ const createPool = (): Pool => {
 }
 
 declare global {
-  // TypeScript requires `var` for global scope declarations
-  // eslint-disable-next-line no-var
   var __mysqlPool: Pool | undefined
 }
 
