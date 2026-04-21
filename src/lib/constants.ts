@@ -12,6 +12,8 @@ export const LINE_META: Record<LineId, { readonly name: string; readonly color: 
   '1': { name: 'Line 1 (Yonge-University)', color: '#D5C82B' },
   '2': { name: 'Line 2 (Bloor-Danforth)', color: '#008000' },
   '4': { name: 'Line 4 (Sheppard)', color: '#B300B3' },
+  '5': { name: 'Line 5 (Eglinton)', color: '#FF8000' },
+  '6': { name: 'Line 6 (Finch West)', color: '#A8A9AD' },
 } as const satisfies Record<LineId, { name: string; color: string }>
 
 // Isochrone fill + stroke per travel-time bucket
