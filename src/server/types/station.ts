@@ -1,4 +1,4 @@
-export type LineId = '1' | '2' | '4'
+export type LineId = '1' | '2' | '4' | '5' | '6'
 
 export type TravelTime = 15 | 30 | 60
 
