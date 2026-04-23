@@ -57,7 +57,7 @@ export function MapContainer(): React.ReactElement {
       center: [...TORONTO_CENTER],
       zoom: DEFAULT_ZOOM,
       attributionControl: false,
-      minZoom: 9,
+      minZoom: 10,
       maxZoom: 16,
       maxBounds: [
         [-80.5, 43.2],
@@ -69,6 +69,20 @@ export function MapContainer(): React.ReactElement {
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', async () => {
+      // Force all road/street layers to render at lower zoom levels
+      const styleLayers = map.getStyle().layers ?? []
+      for (const layer of styleLayers) {
+        if (
+          layer.id.includes('road') ||
+          layer.id.includes('street') ||
+          layer.id.includes('tunnel') ||
+          layer.id.includes('bridge') ||
+          layer.id.includes('path')
+        ) {
+          map.setLayerZoomRange(layer.id, 0, 24)
+        }
+      }
+
       map.addSource('isochrone-polygons', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
