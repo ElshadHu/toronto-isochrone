@@ -27,9 +27,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} antialiased`}
+      style={{ height: '100dvh' }}
     >
-      <body className="flex h-full flex-col">
+      <body className="flex flex-col" style={{ height: '100dvh' }}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
