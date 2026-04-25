@@ -15,32 +15,33 @@ export function Sidebar(): React.ReactElement {
 
   return (
     <>
-      <div
-        className={[
-          'absolute top-0 left-0 z-20 hidden h-full md:flex',
-          'transition-transform duration-300 ease-in-out',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
-        ].join(' ')}
-      >
-        <aside className="flex h-full w-64 flex-col gap-3 overflow-y-auto border-r border-white/10 bg-zinc-950/95 px-4 py-4 shadow-xl backdrop-blur-sm">
-          <div className="min-w-0">
-            <h1 className="text-sm font-semibold tracking-tight text-white">Toronto Isochrone</h1>
-            <p className="mt-0.5 text-[11px] text-zinc-500">
-              Transit reachability from every TTC subway station.
-            </p>
-          </div>
+      <div className="absolute top-0 left-0 z-20 hidden h-full md:flex">
+        <div
+          className={[
+            'h-full overflow-hidden',
+            'transition-[width] duration-300 ease-in-out',
+            isOpen ? 'w-64' : 'w-0',
+          ].join(' ')}
+        >
+          <aside className="flex h-full w-64 flex-col gap-3 overflow-y-auto border-r border-white/10 bg-zinc-950/95 px-4 py-4 shadow-xl backdrop-blur-sm">
+            <div className="min-w-0">
+              <h1 className="text-sm font-semibold tracking-tight text-white">Toronto Isochrone</h1>
+              <p className="mt-0.5 text-[11px] text-zinc-500">
+                Transit reachability from every TTC subway station.
+              </p>
+            </div>
 
-          <SelectedStationCard />
-          <TravelTimeToggle />
-          <LineFilter />
-          <StationList />
-        </aside>
+            <SelectedStationCard />
+            <TravelTimeToggle />
+            <LineFilter />
+            <StationList />
+          </aside>
+        </div>
         <button
           onClick={() => setIsOpen((v) => !v)}
           aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           className={[
-            'absolute top-1/2 -right-6 -translate-y-1/2',
-            'flex h-10 w-6 items-center justify-center',
+            'flex h-10 w-6 shrink-0 items-center justify-center self-center',
             'rounded-r-md border border-l-0 border-white/10 bg-zinc-900',
             'text-zinc-500 shadow-md',
             'transition-colors hover:bg-zinc-800 hover:text-zinc-200',
